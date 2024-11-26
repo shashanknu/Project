@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Blockchain File Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa; /* Soft pastel blue */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #6a5acd; /* Pastel purple */
+            padding: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .navbar {
+            margin-top: 15px;
+        }
+
+        .navbar .btn {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: 1px solid white;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar .btn:hover {
+            background-color: #ff6347; /* Pastel coral */
+            border-color: #ff6347;
+            color: white;
+        }
+
+        .logout-btn {
+            background-color: #ff6347; /* Stand-out coral for logout */
+            border: none;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff4500; /* Darker coral */
+        }
+
+        /* Main Content Styling */
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .dashboard-content h2 {
+            font-size: 22px;
+            color: #6a5acd; /* Match header color */
+            margin-bottom: 10px;
+        }
+
+        .dashboard-content p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .ipfs-success {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6ffe6; /* Light green for success */
+            border: 1px solid #b3ffb3; /* Matching border */
+            border-radius: 5px;
+        }
+
+        .ipfs-success h3 {
+            color: #28a745; /* Stronger green */
+            margin-bottom: 5px;
+        }
+
+        .ipfs-success p {
+            font-size: 14px;
+        }
+
+        .ipfs-success a {
+            color: #0066cc; /* Link color */
+            text-decoration: none;
+        }
+
+        .ipfs-success a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #6a5acd; /* Pastel purple */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Welcome, {{ session['username'] }}!</h1>
+            <nav class="navbar">
+                <a href="{{ url_for('home') }}" class="btn {% if request.path == url_for('home') %}active{% endif %}">Home</a>
+                <a href="{{ url_for('upload_file') }}" class="btn {% if request.path == url_for('upload_file') %}active{% endif %}">Upload File</a>
+                <a href="{{ url_for('verify_file') }}" class="btn {% if request.path == url_for('verify_file') %}active{% endif %}">Verify File</a>
+                <a href="{{ url_for('view_blockchain') }}" class="btn {% if request.path == url_for('view_blockchain') %}active{% endif %}">View Blockchain</a>
+                <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="dashboard-content">
+            <h2>Manage Your Files</h2>
+            <p>Use the options above to upload files, verify their integrity, or view blockchain data.</p>
+
+            <!-- Display the IPFS Hash after successful upload -->
+            {% if session.get('ipfs_hash') %}
+            <div class="ipfs-success">
+                <h3>File Uploaded Successfully!</h3>
+                <p><strong>IPFS Hash:</strong> <a href="https://ipfs.io/ipfs/{{ session['ipfs_hash'] }}" target="_blank">{{ session['ipfs_hash'] }}</a></p>
+                <p>You can share this hash to access the file on IPFS.</p>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Blockchain File Upload System | Designed for Security and Transparency</p>
+        </div>
+    </footer>
+</body>
+</html>

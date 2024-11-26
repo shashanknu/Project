@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Verify File{% endblock %}
+{% block content %}
+    <section class="verify-section">
+        <h2 class="verify-title">Verify File in Blockchain</h2>
+        <form method="POST" action="{{ url_for('verify_file') }}" class="verify-form">
+            <div class="form-group">
+                <label for="ipfs_hash">Enter IPFS Hash:</label>
+                <input type="text" id="ipfs_hash" name="ipfs_hash" placeholder="Enter the IPFS hash to verify" required>
+            </div>
+            <button type="submit" class="btn">Verify</button>
+        </form>
+
+        {% if verified is not none %}
+            <div class="verification-result">
+                {% if verified %}
+                    <div class="success-message">
+                        <h3>File Verified!</h3>
+                        <p>The file has been successfully verified and found in the blockchain.</p>
+                        <table class="block-details">
+                            <thead>
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Timestamp</th>
+                                    <th>IPFS Hash</th>
+                                    <th>Previous Hash</th>
+                                    <th>Current Hash</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ block_details['index'] }}</td>
+                                    <td>{{ block_details['timestamp'] }}</td>
+                                    <td>
+                                        <a href="https://ipfs.io/ipfs/{{ block_details['data'] }}" target="_blank">{{ block_details['data'] }}</a>
+                                    </td>
+                                    <td>{{ block_details['previous_hash'] }}</td>
+                                    <td>{{ block_details['hash'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="error-message">
+                        <h3>File Not Found</h3>
+                        <p>The file associated with the provided IPFS hash could not be located in the blockchain.</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
+
+    <style>
+        /* Verify Section Styling */
+        .verify-section {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .verify-title {
+            color: #6a5acd; /* Pastel purple */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"] {
+            width: 80%;
+            font-size: 14px;
+            padding: 8px;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: #6a5acd;
+            outline: none;
+            box-shadow: 0 0 5px rgba(106, 90, 205, 0.3);
+        }
+
+        .btn {
+            background-color: #6a5acd; /* Pastel purple */
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #ff6347; /* Coral */
+            transform: translateY(-2px);
+        }
+
+        .verification-result {
+            margin-top: 20px;
+        }
+
+        .success-message, .error-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background-color: #e6ffe6; /* Light green */
+            color: #28a745; /* Green text */
+            border: 1px solid #28a745;
+        }
+
+        .error-message {
+            background-color: #ffe5e5; /* Light red */
+            color: #d9534f; /* Red text */
+            border: 1px solid #d9534f;
+        }
+
+        .block-details {
+            margin: 20px auto;
+            width: 100%; /* Use full width of the container */
+            max-width: 100%; /* Prevent horizontal scrolling */
+            border-collapse: collapse;
+            table-layout: fixed; /* Ensure the table cells adjust evenly */
+        }
+
+        .block-details th, .block-details td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            word-wrap: break-word; /* Allow breaking long words like hashes */
+        }
+
+        .block-details th {
+            background-color: #6a5acd;
+            color: white;
+            font-size: 12px;
+        }
+
+        .block-details td {
+            font-size: 13px;
+        }
+
+        .block-details a {
+            color: #0069d9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .block-details a:hover {
+            text-decoration: underline;
+        }
+
+        /* Adjust table container for full visibility */
+        body {
+            overflow-x: hidden; /* Prevent horizontal scrolling on the entire page */
+        }
+
+        .verification-result {
+            display: flex;
+            justify-content: center;
+        }
+
+        .block-details-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}

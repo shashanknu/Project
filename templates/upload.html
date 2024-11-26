@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Upload File{% endblock %}
+{% block content %}
+    <section class="upload-section">
+        <h2 class="upload-title">Upload File to IPFS</h2>
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_file') }}" class="upload-form">
+            <div class="form-group">
+                <label for="file">Choose a file:</label>
+                <input type="file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn">Upload</button>
+        </form>
+
+        {% if ipfs_hash %}
+            <div class="success-message">
+                <p><strong>Success!</strong> Your file has been uploaded to IPFS.</p>
+                <p><strong>IPFS Hash:</strong>
+                    <a href="https://ipfs.io/ipfs/{{ ipfs_hash }}" target="_blank">{{ ipfs_hash }}</a>
+                </p>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="error-message">
+                <p><strong>Error:</strong> {{ error }}</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <style>
+        /* Upload Section Styling */
+        .upload-section {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .upload-title {
+            color: #6a5acd; /* Pastel purple */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            font-size: 14px;
+            padding: 5px;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="file"]:focus {
+            border-color: #6a5acd;
+            outline: none;
+            box-shadow: 0 0 5px rgba(106, 90, 205, 0.3);
+        }
+
+        .btn {
+            background-color: #6a5acd; /* Pastel purple */
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #ff6347; /* Coral */
+            transform: translateY(-2px);
+        }
+
+        .success-message, .error-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background-color: #e6ffe6; /* Light green */
+            color: #28a745; /* Green text */
+            border: 1px solid #28a745;
+        }
+
+        .success-message a {
+            color: #0069d9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .success-message a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background-color: #ffe5e5; /* Light red */
+            color: #d9534f; /* Red text */
+            border: 1px solid #d9534f;
+        }
+    </style>
+{% endblock %}

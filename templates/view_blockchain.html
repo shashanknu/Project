@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Blockchain Overview{% endblock %}
+
+{% block content %}
+    <section class="blockchain-overview-section">
+        <h2 class="blockchain-overview-title">Blockchain Overview</h2>
+
+        {% if blockchain %}
+            <div class="table-container">
+                <table class="blockchain-table">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Timestamp</th>
+                            <th>Data (IPFS Hash)</th>
+                            <th>Previous Hash</th>
+                            <th>Current Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for block in blockchain|reverse %}
+                        <tr>
+                            <td>{{ block['index'] }}</td>
+                            <td>{{ block['timestamp'] }}</td>
+                            <td>
+                                <a href="https://ipfs.io/ipfs/{{ block['data'] }}" target="_blank">{{ block['data'] }}</a>
+                            </td>
+                            <td>{{ block['previous_hash'] }}</td>
+                            <td>{{ block['hash'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-blocks-message">
+                <p>No blocks found in the blockchain.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <style>
+        /* Blockchain Overview Section */
+        .blockchain-overview-section {
+            width: 100%; /* Take full width of the page */
+            max-width: 100%; /* Prevent scrolling */
+            margin-left: 0;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: left; /* Align content to the left */
+            overflow-x: auto; /* Allow horizontal scroll for wide tables if needed */
+        }
+
+        .blockchain-overview-title {
+            color: #6a5acd; /* Pastel purple */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .table-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow-x: auto; /* Allows horizontal scrolling if the table is too wide */
+        }
+
+        .blockchain-table {
+            width: 100%;
+            table-layout: fixed; /* Make the table cells fit within the width */
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .blockchain-table th, .blockchain-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .blockchain-table th {
+            background-color: #6a5acd;
+            color: white;
+        }
+
+        .blockchain-table td {
+            background-color: #f9f9f9;
+        }
+
+        .blockchain-table tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        .blockchain-table a {
+            color: #0069d9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .blockchain-table a:hover {
+            text-decoration: underline;
+        }
+
+        .no-blocks-message {
+            background-color: #ffe5e5; /* Light red */
+            color: #d9534f; /* Red text */
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .blockchain-table th, .blockchain-table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+{% endblock %}
